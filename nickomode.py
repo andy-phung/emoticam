@@ -10,7 +10,6 @@ import cv2 as cv
 import numpy as np
 import mediapipe as mp
 
-from utils import CvFpsCalc
 from model import KeyPointClassifier
 from model import PointHistoryClassifier
 
@@ -49,8 +48,6 @@ def main():
     min_detection_confidence = args.min_detection_confidence
     min_tracking_confidence = args.min_tracking_confidence
 
-    use_brect = True
-
     # Camera prep
     cap = cv.VideoCapture(cap_device)
     cap.set(cv.CAP_PROP_FRAME_WIDTH, cap_width)
@@ -84,9 +81,6 @@ def main():
             row[0] for row in point_history_classifier_labels
         ]
 
-    # FPS
-    cvFpsCalc = CvFpsCalc(buffer_len=10)
-
     # Coords history
     history_length = 16
     point_history = deque(maxlen=history_length)
@@ -96,7 +90,6 @@ def main():
     mode = 0
 
     while True:
-        fps = cvFpsCalc.get()
 
         # ESC = End
         key = cv.waitKey(10)
@@ -122,8 +115,6 @@ def main():
         if results.multi_hand_landmarks is not None:
             for hand_landmarks, handedness in zip(results.multi_hand_landmarks,
                                                   results.multi_handedness):
-                # Box calculation
-                brect = calc_bounding_rect(debug_image, hand_landmarks)
 
                 # Landmark calculation
                 landmark_list = calc_landmark_list(debug_image, hand_landmarks)
@@ -158,26 +149,12 @@ def main():
                 most_common_fg_id = Counter(
                     finger_gesture_history).most_common()
 
-                # Draw landmarks and labels
-                debug_image = draw_bounding_rect(use_brect, debug_image, brect)
-                debug_image = draw_landmarks(debug_image, landmark_list)
-                debug_image = draw_info_text(
-                    debug_image,
-                    brect,
-                    handedness,
-                    keypoint_classifier_labels[hand_sign_id],
-                    point_history_classifier_labels[most_common_fg_id[0][0]],
-                )
-
-            # write detected gesture to selected text box
-            pyautogui.write(keypoint_classifier_labels[hand_sign_id])
-            # send detected gesture contained in text box to recipient
-            pyautogui.press('enter')
+            print(keypoint_classifier_labels[hand_sign_id])
         else:
             point_history.append([0, 0])
 
         debug_image = draw_point_history(debug_image, point_history)
-        debug_image = draw_info(debug_image, fps, mode, number)
+        debug_image = draw_info(debug_image, mode, number)
 
         # Reflect screen
         cv.imshow('Hand Gesture Recognition', debug_image)
@@ -485,35 +462,6 @@ def draw_landmarks(image, landmark_point):
     return image
 
 
-def draw_bounding_rect(use_brect, image, brect):
-    if use_brect:
-        cv.rectangle(image, (brect[0], brect[1]), (brect[2], brect[3]),
-                     (0, 0, 0), 1)
-
-    return image
-
-
-def draw_info_text(image, brect, handedness, hand_sign_text,
-                   finger_gesture_text):
-    cv.rectangle(image, (brect[0], brect[1]), (brect[2], brect[1] - 22),
-                 (0, 0, 0), -1)
-
-    info_text = handedness.classification[0].label[0:]
-    if hand_sign_text != "":
-        info_text = info_text + ':' + hand_sign_text
-    cv.putText(image, info_text, (brect[0] + 5, brect[1] - 4),
-               cv.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 1, cv.LINE_AA)
-
-    if finger_gesture_text != "":
-        cv.putText(image, "Finger Gesture:" + finger_gesture_text, (10, 60),
-                   cv.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 0), 4, cv.LINE_AA)
-        cv.putText(image, "Finger Gesture:" + finger_gesture_text, (10, 60),
-                   cv.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 255), 2,
-                   cv.LINE_AA)
-
-    return image
-
-
 def draw_point_history(image, point_history):
     for index, point in enumerate(point_history):
         if point[0] != 0 and point[1] != 0:
@@ -523,13 +471,7 @@ def draw_point_history(image, point_history):
     return image
 
 
-def draw_info(image, fps, mode, number):
-    # print FPS
-    cv.putText(image, "FPS:" + str(fps), (10, 30), cv.FONT_HERSHEY_SIMPLEX,
-               1.0, (0, 0, 0), 4, cv.LINE_AA)
-    cv.putText(image, "FPS:" + str(fps), (10, 30), cv.FONT_HERSHEY_SIMPLEX,
-               1.0, (255, 255, 255), 2, cv.LINE_AA)
-
+def draw_info(image, mode, number):
     # print gesture mode
     mode_string = ['Logging Key Point', 'Logging Point History']
     if 1 <= mode <= 2:
