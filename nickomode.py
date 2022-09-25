@@ -342,6 +342,7 @@ def draw_landmarks(image, landmark_point):
         cv.line(image, tuple(landmark_point[19]), tuple(landmark_point[20]),
                 (255, 255, 255), 2)
 
+
         # Palm
         cv.line(image, tuple(landmark_point[0]), tuple(landmark_point[1]),
                 (0, 0, 0), 6)
