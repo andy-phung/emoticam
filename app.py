@@ -170,6 +170,7 @@ def main():
                     keypoint_classifier_labels[hand_sign_id],
                     point_history_classifier_labels[most_common_fg_id[0][0]],
                 )
+
             if keypoint_classifier_labels[hand_sign_id] != "Open" or "Closed" or "Pointer":
                 pyautogui.write(keypoint_classifier_labels[hand_sign_id])
             pyautogui.press('enter')
