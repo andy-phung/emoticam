@@ -13,6 +13,8 @@ import os
 import keyboard
 import time
 
+from Keyboard import Keys
+
 pyautogui.FAILSAFE = False
 
 
@@ -59,6 +61,8 @@ if not cap.isOpened():
     print("Cannot open camera")
     exit()
 
+tf = Keys()
+
 while True:
 
     # Capture frame-by-frame
@@ -76,7 +80,9 @@ while True:
         data.append(smile_preds)
     """
 
-    if cycle_counter >= 100:
+    tf.run(frame)
+
+    if cycle_counter >= 100 and tf.showPic: 
         preds_pre = fa.get_landmarks(frame)
         if preds_pre is not None:
             preds = torch.Tensor(fa.get_landmarks(frame)[0]).flatten().unsqueeze(0)
