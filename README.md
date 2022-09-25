@@ -24,7 +24,9 @@ Press `n` to activate hand gesture recognition, and `a` to activate facial expre
 ### Face Expression Key (Face -> Emoji)
 ![face_to_emoji.png](face_to_emoji.png)
 
-
+### Hand Control Key (Hand -> Character)
+![img_2.png](img_2.png)
+![img_3.png](img_3.png)
 
 ### Reference
 * [MediaPipe](https://mediapipe.dev/)
