@@ -94,7 +94,7 @@ def main():
     mode = 0
 
     while True:
-        if keyboard.is_pressed("H"):
+        if keyboard.is_pressed("h"):
             break
 
         # ESC = End
