@@ -1,4 +1,4 @@
-v## Emoticam: An accessible, keyboard-free, communication tool
+## Emoticam: An accessible, keyboard-free, communication tool
 #### By: Andy Phung, Brendan Lieu, Kyle Carbonell, and Nicholas Bui
 
 ### About:
