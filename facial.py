@@ -95,7 +95,7 @@ while True:
     cv.imshow('frame', frame)
     cycle_counter += 1
 
-    if keyboard.is_pressed("H"):
+    if keyboard.is_pressed("h"):
         break
 
     if cv.waitKey(1) == ord('q'):
