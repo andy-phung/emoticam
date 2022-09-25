@@ -22,6 +22,7 @@ Press `n` to activate hand gesture recognition, and `a` to activate facial expre
 ![img_1.png](img_1.png)
 
 ### Face Expression Key (Face -> Emoji)
+![face_to_emoji.png](face_to_emoji.png)
 
 
 
