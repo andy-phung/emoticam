@@ -170,18 +170,16 @@ def main():
                     keypoint_classifier_labels[hand_sign_id],
                     point_history_classifier_labels[most_common_fg_id[0][0]],
                 )
-
-                # if keypoint_classifier_labels[hand_sign_id] != "Open" or "Close" or "Pointer":
-                #     pyautogui.write(keypoint_classifier_labels[hand_sign_id])
-                #     pyautogui.press('enter')
-
+            if keypoint_classifier_labels[hand_sign_id] != "Open" or "Closed" or "Pointer":
+                pyautogui.write(keypoint_classifier_labels[hand_sign_id])
+            pyautogui.press('enter')
         else:
             point_history.append([0, 0])
 
         debug_image = draw_point_history(debug_image, point_history)
         debug_image = draw_info(debug_image, fps, mode, number)
 
-        # Screen reflection #############################################################
+        # Screen reflection
         cv.imshow('Hand Gesture Recognition', debug_image)
 
     cap.release()
