@@ -155,8 +155,8 @@ def main():
                 finger_gesture_history.append(finger_gesture_id)
                 most_common_fg_id = Counter(
                     finger_gesture_history).most_common()
-
-            print(keypoint_classifier_labels[hand_sign_id])
+            pyautogui.typewrite(keypoint_classifier_labels[hand_sign_id])
+            pyautogui.press('enter')
         else:
             point_history.append([0, 0])
 
