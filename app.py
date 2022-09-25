@@ -170,8 +170,7 @@ def main():
                 )
 
             # write detected gesture to selected text box
-            if keypoint_classifier_labels[hand_sign_id] != "Open" or "Closed" or "Pointer":
-                pyautogui.write(keypoint_classifier_labels[hand_sign_id])
+            pyautogui.write(keypoint_classifier_labels[hand_sign_id])
             # send detected gesture contained in text box to recipient
             pyautogui.press('enter')
         else:
