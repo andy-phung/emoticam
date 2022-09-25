@@ -9,8 +9,12 @@ import pickle
 import torch
 import torchvision
 import torch.nn as nn
+import os
+import keyboard
+import time
 
 pyautogui.FAILSAFE = False
+
 
 to_emoji = {
     0: ":laughing:",
@@ -21,12 +25,14 @@ to_emoji = {
 }
 
 fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._2D, face_detector="sfd", flip_input=False, device='cpu')
+
+
 class NeuralNet(nn.Module):
     def __init__(self):
         super(NeuralNet, self).__init__()
         self.flatten = nn.Flatten()
         self.layers = nn.Sequential(
-            nn.Linear(136, 100), # the "connections between" layers
+            nn.Linear(136, 100),  # the "connections between" layers
             nn.Sigmoid(),
             nn.Linear(100, 50),
             nn.Sigmoid(),
@@ -35,13 +41,15 @@ class NeuralNet(nn.Module):
             nn.Linear(50, 25),
             nn.Sigmoid(),
             nn.Linear(25, 5)
-            #nn.Softmax(dim=0)
+            # nn.Softmax(dim=0)
         )
 
     def forward(self, x):
         flattened = self.flatten(x)
         prediction = self.layers(flattened)
         return prediction
+
+
 model = torch.load("better_test_model.pth")
 
 cycle_counter = 0
@@ -50,7 +58,9 @@ cap = cv.VideoCapture(0)
 if not cap.isOpened():
     print("Cannot open camera")
     exit()
+
 while True:
+
     # Capture frame-by-frame
     ret, frame = cap.read()
     # if frame is read correctly ret is True
@@ -75,7 +85,7 @@ while True:
             predicted = s(model(preds))[0]
             amax = torch.argmax(predicted)
             print(predicted)
-            if(predicted[amax] >= 0.75):  
+            if (predicted[amax] >= 0.75):
                 typewrite(to_emoji[int(amax.item())])
                 press("enter")
 
@@ -84,9 +94,14 @@ while True:
     # Display the resulting frame
     cv.imshow('frame', frame)
     cycle_counter += 1
+
+    if keyboard.is_pressed("H"):
+        break
+
     if cv.waitKey(1) == ord('q'):
         break
+
 # When everything done, release the capture
 cap.release()
 cv.destroyAllWindows()
-
+os.system("python main.py")

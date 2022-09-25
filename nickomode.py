@@ -17,15 +17,6 @@ import mediapipe as mp
 from model import KeyPointClassifier
 from model import PointHistoryClassifier
 
-switch = 0
-
-
-def check_start():
-    start = 0
-    if keyboard.is_pressed("A") and start == 0:
-        pyautogui.press('esc')
-        os.system("python facial.py")
-        time.sleep(0.1)
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -103,11 +94,14 @@ def main():
     mode = 0
 
     while True:
-        check_start()
+        if keyboard.is_pressed("H"):
+            break
+
         # ESC = End
         key = cv.waitKey(10)
         if key == 27:  # ESC
             break
+
         number, mode = select_mode(key, mode)
 
         # Camera capture
@@ -174,6 +168,7 @@ def main():
 
     cap.release()
     cv.destroyAllWindows()
+    os.system("python main.py")
 
 
 def select_mode(key, mode):
