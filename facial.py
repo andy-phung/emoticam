@@ -50,7 +50,7 @@ class NeuralNet(nn.Module):
         return prediction
 
 
-model = torch.load("better_test_model.pth")
+model = torch.load("model/better_test_model.pth")
 
 cycle_counter = 0
 

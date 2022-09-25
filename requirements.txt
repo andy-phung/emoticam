@@ -1,0 +1,10 @@
+torch
+torchvision
+tensorflow
+face-alignment
+scikit-image
+pyautogui
+scipy
+mediapipe
+opencv-python
+keyboard
