@@ -1,5 +1,5 @@
 ## Emoticam: An accessible, keyboard-free, communication tool
-#### By: Andy Phung, Brendan Lieu, Kyle Carbonell, and Nicholas Bui
+#### By: Brendan Lieu, Andy Phung, Kyle Carbonell, and Nicholas Bui
 
 ### About:
 #### Using OpenCV facial recognition, users can make hand gestures or facial expressions toward their webcam and our program will convert it into emojis, automatically sending their selected recipient.
